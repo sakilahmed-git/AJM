@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { Menu, X, ArrowUpRight, MapPin, Mail, Phone } from "lucide-react";
+import { Menu, X, ArrowUpRight, MapPin, Mail, Phone, LoaderCircle } from "lucide-react";
 
 const links = [
   ["Our School", "/#story"],
@@ -19,6 +19,7 @@ export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [hash, setHash] = useState("");
+  const [pendingHref, setPendingHref] = useState<string | null>(null);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -54,6 +55,41 @@ export function SiteHeader() {
     };
   }, []);
 
+  useEffect(() => {
+    setPendingHref(null);
+    setHash(window.location.hash);
+    setOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!open) return;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("keydown", closeOnEscape);
+    return () => document.removeEventListener("keydown", closeOnEscape);
+  }, [open]);
+
+  useEffect(() => {
+    const syncHash = (event: MouseEvent) => {
+      const link = (event.target as Element | null)?.closest<HTMLAnchorElement>("a[href]");
+      if (!link) return;
+      const destination = new URL(link.href, window.location.href);
+      if (destination.origin === window.location.origin && destination.pathname === pathname) {
+        setHash(destination.hash);
+      }
+    };
+    document.addEventListener("click", syncHash, true);
+    return () => document.removeEventListener("click", syncHash, true);
+  }, [pathname]);
+
+  const handleNavigation = (href: string) => {
+    setOpen(false);
+    const destination = new URL(href, window.location.href);
+    setHash(destination.hash);
+    setPendingHref(destination.pathname === pathname ? null : href);
+  };
+
   const isActive = (href: string) => {
     if (href === "/#story") return pathname === "/" && hash !== "#contact";
     if (href === "/#contact") return pathname === "/" && hash === "#contact";
@@ -72,7 +108,7 @@ export function SiteHeader() {
         <a href="mailto:ajmschool@gmail.com">Get in touch <ArrowUpRight size={13} /></a>
       </div>
       <div className="nav-wrap">
-        <Link className="brand" href="/" aria-label="AJM English School home" onClick={() => setOpen(false)}>
+        <Link className="brand" href="/" aria-label="AJM English School home" onClick={() => handleNavigation("/")}>
           <span className="brand-mark"><img src="/unnamed-fotor-bg-remover-20250627142251.png" alt="" /></span>
           <span className="brand-copy"><strong>AJM <i>English School</i></strong><small>LEARN · LEAD · BELONG</small></span>
         </Link>
@@ -80,20 +116,28 @@ export function SiteHeader() {
           className="mobile-toggle"
           aria-label={open ? "Close navigation" : "Open navigation"}
           aria-expanded={open}
+          aria-controls="ajm-main-navigation"
           onClick={() => setOpen((value) => !value)}
         >
-          {open ? <X /> : <Menu />}
+          <span className="menu-icon">{open ? <X /> : <Menu />}</span>
         </button>
-        <nav className={open ? "nav-links is-open" : "nav-links"} aria-label="Main navigation">
+        <nav id="ajm-main-navigation" className={open ? "nav-links is-open" : "nav-links"} aria-label="Main navigation">
           {links.map(([label, href]) => {
             const active = isActive(href);
             return (
-              <Link key={label} href={href} onClick={() => setOpen(false)} className={active ? "nav-active" : undefined} aria-current={active ? "page" : undefined}>
-                {label}
+              <Link key={label} href={href} onClick={() => handleNavigation(href)} className={`${active ? "nav-active" : ""}${pendingHref === href ? " is-pending" : ""}`} aria-current={active ? "page" : undefined}>
+                {label}{pendingHref === href && <LoaderCircle className="nav-loader" size={13} aria-hidden="true" />}
               </Link>
             );
           })}
-          <Link className="nav-cta" href="/#contact" onClick={() => setOpen(false)}>Enquire <ArrowUpRight size={15} /></Link>
+          <Link
+            className={`nav-cta${isActive("/#contact") ? " is-current-contact" : ""}${pendingHref === "/#contact" ? " is-pending" : ""}`}
+            href="/#contact"
+            aria-current={isActive("/#contact") ? "location" : undefined}
+            onClick={() => handleNavigation("/#contact")}
+          >
+            Enquire {pendingHref === "/#contact" ? <LoaderCircle className="nav-loader" size={14} aria-hidden="true" /> : <ArrowUpRight size={15} />}
+          </Link>
         </nav>
       </div>
       
@@ -117,7 +161,6 @@ export function SiteHeader() {
           color: #20513f;
           background: rgba(39, 91, 69, .10);
           border-radius: 9px;
-          box-shadow: inset 0 -3px 0 #bd9a4c;
         }
         #ajm-site-header .brand img { display: block; }
         @media (max-width: 760px) {

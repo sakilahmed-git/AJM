@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { SiteHeader, SiteFooter } from "@/components/site-shell";
+import { MotionShell } from "@/components/motion-shell";
 
 export const metadata: Metadata = {
   title: {
@@ -25,9 +26,11 @@ export default function RootLayout({
     <html lang="en">
       <body>
         {/* The only site-wide header/footer. Do not render these again in page layouts. */}
-        <SiteHeader />
-        <main id="main-content">{children}</main>
-        <SiteFooter />
+        <MotionShell>
+          <SiteHeader />
+          <main id="main-content">{children}</main>
+          <SiteFooter />
+        </MotionShell>
       </body>
     </html>
   );
