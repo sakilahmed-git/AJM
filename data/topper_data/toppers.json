@@ -1,0 +1,29 @@
+[
+  {
+    "name": "Ayesha Begum",
+    "class": "10",
+    "rank": "1st",
+    "marks": "586/600",
+    "percentage": "97.67%",
+    "year": "2026",
+    "image": ""
+  },
+  {
+    "name": "Fatima Khatun",
+    "class": "10",
+    "rank": "2nd",
+    "marks": "568/600",
+    "percentage": "94.67%",
+    "year": "2026",
+    "image": ""
+  },
+  {
+    "name": "Aarav Sharma",
+    "class": "10",
+    "rank": "3rd",
+    "marks": "560/600",
+    "percentage": "93.33%",
+    "year": "2026",
+    "image": ""
+  }
+]
