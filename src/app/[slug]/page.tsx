@@ -9,7 +9,6 @@ import {
   ChartNoAxesColumnIncreasing,
   Wallet,
   MapPin,
-  GraduationCap,
   Users,
   School,
 } from "lucide-react";
@@ -166,7 +165,7 @@ function AcademicsContent() {
           <span className="section-kicker">LEADERSHIP & GUIDANCE</span>
           <h2>The people behind <em>our school.</em></h2>
           <p>
-            Meet the members of AJM English School's governing body.
+            Meet the members of AJM English School&apos;s governing body.
           </p>
         </div>
 
@@ -191,7 +190,7 @@ function AcademicsContent() {
           <span className="section-kicker">THE PEOPLE WHO HELP US GROW</span>
           <h2>Meet our <em>team.</em></h2>
           <p>
-            The educators and staff who contribute to our school's learning
+            The educators and staff who contribute to our school&apos;s learning
             environment.
           </p>
         </div>
@@ -320,7 +319,7 @@ export default async function InformationPage({
 
       <section className="subpage-help">
         <div>
-          <span className="section-kicker">WE'RE HERE TO HELP</span>
+          <span className="section-kicker">WE&apos;RE HERE TO HELP</span>
           <h2>Need a little <em>guidance?</em></h2>
         </div>
         <Link className="button button-dark" href="/#contact">

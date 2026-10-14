@@ -165,106 +165,6 @@ function SchoolClock() {
   );
 }
 
-function Header() {
-  const [open, setOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 18);
-
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  const nav = [
-    ["Our school", "/#story"],
-    ["Academics", "/academics"],
-    ["Exam dates", "/exam-dates"],
-    ["Results", "/results"],
-    ["Toppers", "/topper"],
-    ["Fees", "/fees"],
-    ["Gallery", "/gallery"],
-  ];
-
-  return (
-    <header
-      id="site-header"
-      className={`ajm-premium-header ${scrolled ? "is-scrolled" : ""}`}
-    >
-      <div className="ajm-topline">
-        <div className="ajm-container ajm-topline-inner">
-          <span>
-            <MapPin size={12} /> GOSSAIGAON, ASSAM
-          </span>
-          <span className="topline-center">
-            A thoughtful education for a changing world.
-          </span>
-          <Link href="/#contact">
-            GET IN TOUCH <ArrowUpRight size={13} />
-          </Link>
-        </div>
-      </div>
-
-      <div className="ajm-container ajm-nav-inner">
-        <Link href="/" className="ajm-brand" aria-label="AJM English School home">
-          <span className="ajm-logo">
-            <Image
-              src="/unnamed-fotor-bg-remover-20250627142251.png"
-              alt="AJM English School emblem"
-              width={52}
-              height={52}
-              priority
-            />
-            <GraduationCap className="ajm-logo-fallback" size={27} />
-          </span>
-          <span className="ajm-brand-copy">
-            <strong>
-              AJM <em>English School</em>
-            </strong>
-            <small>LEARN · LEAD · BELONG</small>
-          </span>
-        </Link>
-
-        <button
-          className="ajm-menu-toggle"
-          onClick={() => setOpen((value) => !value)}
-          aria-label={open ? "Close navigation" : "Open navigation"}
-          aria-expanded={open}
-        >
-          {open ? <X /> : <Menu />}
-        </button>
-
-        <nav className={`ajm-nav-links ${open ? "nav-open" : ""}`}>
-          {nav.map(([label, href]) => (
-            <Link key={label} href={href} onClick={() => setOpen(false)}>
-              {label}
-            </Link>
-          ))}
-
-          <Link
-            className="ajm-admin-link"
-            href="/admin/login"
-            onClick={() => setOpen(false)}
-          >
-            <ShieldCheck size={15} /> Admin
-          </Link>
-
-          <Link
-            className="ajm-enquire"
-            href="/admissions"
-            onClick={() => setOpen(false)}
-          >
-            Admissions <ArrowUpRight size={15} />
-          </Link>
-        </nav>
-      </div>
-    </header>
-  );
-}
-
-
 function Announcement() {
   const messages = [
     { label: "FROM THE SCHOOL", text: "Every learner has a story. We're here to help them write it.", icon: Sparkles },
@@ -758,7 +658,7 @@ function Contact() {
             <em>with us.</em>
           </h2>
           <p>
-            Have a question about admissions, classes or school life? We'd
+            Have a question about admissions, classes or school life? We&apos;d
             love to hear from you.
           </p>
 
@@ -789,50 +689,6 @@ function Contact() {
         </div>
       </div>
     </section>
-  );
-}
-
-function Footer() {
-  return (
-    <footer className="ajm-premium-footer">
-      <div className="ajm-container ajm-footer-top">
-        <Link href="/" className="ajm-brand">
-          <span className="ajm-logo">
-            <Image
-              src="/unnamed-fotor-bg-remover-20250627142251.png"
-              alt="AJM English School"
-              width={44}
-              height={44}
-            />
-          </span>
-          <span className="ajm-brand-copy">
-            <strong>
-              AJM <em>English School</em>
-            </strong>
-            <small>LEARN · LEAD · BELONG</small>
-          </span>
-        </Link>
-
-        <p>A thoughtful education for a changing world.</p>
-
-        <div className="ajm-footer-links">
-          <Link href="/academics">Academics</Link>
-          <Link href="/exam-dates">Exam dates</Link>
-          <Link href="/results">Results</Link>
-          <Link href="/gallery">Gallery</Link>
-          <Link href="/admissions">Admissions</Link>
-          <Link href="/admin/login">
-            <ShieldCheck size={14} /> Admin
-          </Link>
-        </div>
-      </div>
-
-      <div className="ajm-container ajm-footer-bottom">
-        <span>© {new Date().getFullYear()} AJM English School</span>
-        <span>GOSSAIGAON · ASSAM</span>
-        <Link href="#top">Back to top ↑</Link>
-      </div>
-    </footer>
   );
 }
 

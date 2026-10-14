@@ -1,8 +1,37 @@
 "use client";
 import { useState } from "react";
 import { Search, FileText, ShieldCheck } from "lucide-react";
+
+type ResultValue = string | number;
+
+interface SubjectMarks {
+ name: string;
+ UT1: ResultValue | null;
+ UT2: ResultValue | null;
+ UT3: ResultValue | null;
+ UT4: ResultValue | null;
+}
+
+interface ResultStudent {
+ Name: string;
+ Class: string;
+ Roll: string;
+ RankFinal?: ResultValue;
+ Remarks?: ResultValue;
+ total1?: ResultValue;
+ total2?: ResultValue;
+ total3?: ResultValue;
+ total4?: ResultValue;
+ subjects: SubjectMarks[];
+}
+
+interface ResultsResponse {
+ student?: ResultStudent;
+ error?: string;
+}
+
 export default function ResultsPage() {
- const [classNo,setClassNo]=useState("10"), [roll,setRoll]=useState(""), [student,setStudent]=useState<any>(null), [error,setError]=useState(""), [busy,setBusy]=useState(false);
- async function search(e:React.FormEvent){e.preventDefault();setBusy(true);setError("");setStudent(null);try{const r=await fetch(`/api/results?class=${classNo}&roll=${encodeURIComponent(roll)}`,{cache:"no-store"});const d=await r.json();if(!r.ok)throw new Error(d.error||"Could not find result");setStudent(d.student)}catch(e:any){setError(e.message)}finally{setBusy(false)}}
+ const [classNo,setClassNo]=useState("10"), [roll,setRoll]=useState(""), [student,setStudent]=useState<ResultStudent|null>(null), [error,setError]=useState(""), [busy,setBusy]=useState(false);
+ async function search(e:React.FormEvent){e.preventDefault();setBusy(true);setError("");setStudent(null);try{const r=await fetch(`/api/results?class=${classNo}&roll=${encodeURIComponent(roll)}`,{cache:"no-store"});const d:ResultsResponse=await r.json();if(!r.ok)throw new Error(d.error||"Could not find result");setStudent(d.student??null)}catch(e:unknown){setError(e instanceof Error?e.message:"Could not find result")}finally{setBusy(false)}}
  return <><main className="subpage"><div className="eyebrow"><span className="eyebrow-line"/> ACADEMIC RECORDS</div><h1>Student <em>results.</em></h1><p>Enter the class and roll number to check a published result.</p><form onSubmit={search} className="portal-form"><label>Class<select value={classNo} onChange={e=>setClassNo(e.target.value)}>{Array.from({length:10},(_,i)=><option key={i} value={i+1}>Class {i+1}</option>)}</select></label><label>Roll number<input value={roll} onChange={e=>setRoll(e.target.value)} required placeholder="Enter roll number"/></label><button className="button button-dark" disabled={busy}>{busy?"Checking…":<> <Search size={16}/> Find result</>}</button></form>{error&&<p className="portal-error" role="alert">{error}</p>}{student&&<section className="portal-result"><div className="result-heading"><FileText/><div><h2>{student.Name}</h2><p>Class {student.Class} · Roll {student.Roll}</p></div><ShieldCheck/></div><div className="result-details">{Object.entries(student).filter(([k,v])=>!["Name","Class","Roll","subjects"].includes(k)&&v!==undefined&&v!==null&&v!=="").map(([k,v])=><div key={k}><small>{k}</small><strong>{String(v)}</strong></div>)}</div><a className="button button-dark ajm-result-download" href={`/marksheet?class=${classNo}&roll=${encodeURIComponent(roll)}`}><FileText size={16}/> Verify & download marksheet</a></section>}</main></>
 }
