@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { SiteHeader, SiteFooter } from "@/components/site-shell";
 import { MotionShell } from "@/components/motion-shell";
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
   title: {
@@ -31,6 +32,7 @@ export default function RootLayout({
           <main id="main-content">{children}</main>
           <SiteFooter />
         </MotionShell>
+        <Analytics />
       </body>
     </html>
   );
