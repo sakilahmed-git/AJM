@@ -3361,3 +3361,4 @@ button:disabled{cursor:wait}
 .portal-error,.login-error,.ajm-admission-error,.ajm-ms-error{animation:ajm-feedback-enter 260ms var(--motion-ease) both}
 .portal-result,.ajm-admission-success{animation:ajm-feedback-enter 360ms var(--motion-ease) both}
 @keyframes ajm-feedback-enter{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
