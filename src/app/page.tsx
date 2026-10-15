@@ -120,10 +120,10 @@ function ValuesMarquee() {
 function Campus() {
   const cards = [
     { image: "/uploads/20250701_122252.jpg", no: "01", title: "Life at AJM", text: "The moments that make memories." },
-    { image: "/teachers/WhatsApp%20Image%202025-07-09%20at%2023.16.02_0391f9d4.jpg", no: "02", title: "Our people", text: "The people who help us grow." },
+    { image: "/teachers/WhatsApp%20Image%202025-07-09%20at%2023.16.02_0391f9d4.jpg", no: "02", title: "Our people", text: "The people who help us grow.", href: "/academics" },
     { image: "/uploads/20250701_122201.jpg", no: "03", title: "Our community", text: "Growing stronger, together." },
   ];
-  return <section className="ajm-campus"><div className="ajm-container"><div className="ajm-section-heading" data-reveal><div><span className="ajm-kicker">A LITTLE LOOK AROUND</span><h2>Small moments.<br /><em>Big beginnings.</em></h2></div><Link href="/gallery" className="ajm-underlined">Explore the gallery <ArrowUpRight size={16} /></Link></div><div className="ajm-campus-grid">{cards.map((card, index) => <Link href="/gallery" className="ajm-campus-card" key={card.no} data-reveal style={{ "--delay": `${index * 80}ms` } as React.CSSProperties}><div className="ajm-campus-image"><Image src={card.image} alt={card.title} fill sizes="(max-width: 760px) 90vw, 33vw" /><span>{card.no}</span><i><ArrowUpRight size={18} /></i></div><div className="ajm-campus-copy"><div><h3>{card.title}</h3><p>{card.text}</p></div><ArrowRight size={18} /></div></Link>)}</div></div></section>;
+  return <section className="ajm-campus"><div className="ajm-container"><div className="ajm-section-heading" data-reveal><div><span className="ajm-kicker">A LITTLE LOOK AROUND</span><h2>Small moments.<br /><em>Big beginnings.</em></h2></div><Link href="/gallery" className="ajm-underlined">Explore the gallery <ArrowUpRight size={16} /></Link></div><div className="ajm-campus-grid">{cards.map((card, index) => <Link href={card.href ?? "/gallery"} className="ajm-campus-card" key={card.no} data-reveal style={{ "--delay": `${index * 80}ms` } as React.CSSProperties}><div className="ajm-campus-image"><Image src={card.image} alt={card.title} fill sizes="(max-width: 760px) 90vw, 33vw" /><span>{card.no}</span><i><ArrowUpRight size={18} /></i></div><div className="ajm-campus-copy"><div><h3>{card.title}</h3><p>{card.text}</p></div><ArrowRight size={18} /></div></Link>)}</div></div></section>;
 }
 
 function Contact() {
